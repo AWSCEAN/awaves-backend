@@ -53,7 +53,7 @@ class Settings(BaseModel):
 def get_settings() -> Settings:
     _load_env_files()
 
-    return Settings(
+    settings = Settings(
         ENV=os.getenv("ENV", "dev"),
         APP_NAME=os.getenv("APP_NAME", "awaves-backend"),
         DEBUG=_to_bool(os.getenv("DEBUG"), False),
@@ -74,6 +74,11 @@ def get_settings() -> Settings:
         AWS_REGION=os.getenv("AWS_REGION", "ap-northeast-2"),
         LOG_LEVEL=os.getenv("LOG_LEVEL", "INFO"),
     )
+
+    if settings.ENV.lower() in {"prod", "production"} and settings.JWT_SECRET == "CHANGE_ME":
+        raise RuntimeError("JWT_SECRET must be set in production")
+
+    return settings
 
 
 settings = get_settings()

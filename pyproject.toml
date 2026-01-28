@@ -6,6 +6,7 @@ target-version = ["py311"]
 line-length = 88
 target-version = "py311"
 
+[tool.ruff.lint]
 select = [
   "E",  # 문법/스타일 에러
   "F",  # 치명적 버그
